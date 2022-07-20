@@ -10,3 +10,4 @@ venv
 
 # Ignore results
 *.json
+*.pyc
