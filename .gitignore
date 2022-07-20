@@ -1,7 +1,7 @@
 # Ignore Mac system files
 .DS_store
 
-# Ignore node_modules folder
+# Ignore node_modules and virtual environment folder
 node_modules
 venv
 
