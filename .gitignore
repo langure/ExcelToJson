@@ -5,7 +5,7 @@
 node_modules
 
 # ignore inputs
-.xlsx
+*.xlsx
 
 # Ignore results
-.json
+*.json
