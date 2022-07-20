@@ -107,7 +107,8 @@ if __name__ == "__main__":
         top_json = {
             "tipo_documento" : documento.tipo_documento,
             "tipo_objeto" : documento.tipo_objeto,
-            "metadatos" : metadatos
+            "metadatos" : metadatos,
+            "sistemas":[{ "sistema" : "SAP" }]
         }
         json_data.append(top_json)
     
@@ -119,6 +120,7 @@ if __name__ == "__main__":
     # Start mongoDB atlas connection
 
     CONNECTION_STRING = "INSERT_YOUR_CREDENTIALS_HERE"
+
     client = MongoClient(CONNECTION_STRING)
     driver = client["Metadatos"]
     collection = driver["metadatos"]
