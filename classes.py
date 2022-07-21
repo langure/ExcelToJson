@@ -15,14 +15,13 @@ METADATO_AUTORIZADO = 10
 FRENTE = 11
 DESCRIPCION_HOMOLOGADA = 12
 METADATO_HOMOLOGADO = 13
+SISTEMA = 14
 
 
 class Documento:
     
-    def __init__(self, tipo_documento:str, tipo_objeto:str):
+    def __init__(self, tipo_documento:str, tipo_objeto:str, sistema:str):
         self.tipo_documento = tipo_documento
         self.tipo_objeto = tipo_objeto
         self.metadatos = []
-        self.sistemas = {
-            "sistema" : "SAP"
-        }
+        self.sistema = sistema

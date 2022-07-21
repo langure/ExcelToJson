@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from classes import *
 
 # ENV
-EXCEL_FILE = "metadatos.xlsx"
+EXCEL_FILE = "metadatos_2.xlsx"
 JSON_FILE = "metadatos.json"
 
 
@@ -30,8 +30,10 @@ if __name__ == "__main__":
     for index, row in excel_data.iterrows():
         t_tipo_documento = row[TIPO_DOCUMENTO]
         if t_tipo_documento not in tipo_document_acumulator:
+            t_tipo_objeto = row[TIPO_OBJETO] if not pd.isna(row[TIPO_OBJETO]) else "Sin tipo objeto"
+            t_sistema = row[SISTEMA] if not pd.isna(row[SISTEMA]) else "Sin sistema"
             tipo_document_acumulator.append(t_tipo_documento)
-            t_d = Documento(t_tipo_documento, row[TIPO_OBJETO])
+            t_d = Documento(t_tipo_documento, t_tipo_objeto, t_sistema)
             json_acumulator.append(t_d)
             
     # Contenedor final de los objetos a serializar
@@ -45,11 +47,11 @@ if __name__ == "__main__":
             if not pd.isna(row[LLAVE]):
                 #print(f"Atributo llave encontrado: {row[LLAVE]}")
                 t_llave = row[LLAVE]
-                t_orden = row[ORDEN] if not pd.isna(row[ORDEN]) else -1
+                t_orden = int(row[ORDEN]) if not pd.isna(row[ORDEN]) else -1
                 t_metadato = row[METADATO] if not pd.isna(row[METADATO]) else ""
                 t_desc_campo = row[DESCRIPCION_CAMPO] if not pd.isna(row[DESCRIPCION_CAMPO]) else ""
                 t_tipo_dato = row[TIPO_DATO] if not pd.isna(row[TIPO_DATO]) else ""
-                t_longitud_dato = row[LONGITUD_DATO] if not pd.isna(row[LONGITUD_DATO]) else ""
+                t_longitud_dato = int(row[LONGITUD_DATO]) if not pd.isna(row[LONGITUD_DATO]) else ""
                 t_ayuda_busqueda = row[AYUDA_BUSQUEDA] if not pd.isna(row[AYUDA_BUSQUEDA]) else ""
                 t_formato = row[FORMATO] if not pd.isna(row[FORMATO]) else ""
                 t_metadato_autorizado = row[METADATO_AUTORIZADO] if not pd.isna(row[METADATO_AUTORIZADO]) else ""
@@ -67,7 +69,7 @@ if __name__ == "__main__":
                     "longitud_dato": t_longitud_dato,
                     "ayuda_busqueda" : t_ayuda_busqueda,
                     "formato" : t_formato,
-                    "metadato_autorizado" : t_metadato_autorizado,
+                    "metadato_autorizacion" : t_metadato_autorizado,
                     "frente" : t_frente,
                     "descripcion_homologada" : t_desc_homologada,
                     "metadato_homologado" : t_metadato_homologado
@@ -79,7 +81,7 @@ if __name__ == "__main__":
                 t_metadato = row[METADATO] if not pd.isna(row[METADATO]) else ""
                 t_desc_campo = row[DESCRIPCION_CAMPO] if not pd.isna(row[DESCRIPCION_CAMPO]) else ""
                 t_tipo_dato = row[TIPO_DATO] if not pd.isna(row[TIPO_DATO]) else ""
-                t_longitud_dato = row[LONGITUD_DATO] if not pd.isna(row[LONGITUD_DATO]) else ""
+                t_longitud_dato = int(row[LONGITUD_DATO]) if not pd.isna(row[LONGITUD_DATO]) else ""
                 t_ayuda_busqueda = row[AYUDA_BUSQUEDA] if not pd.isna(row[AYUDA_BUSQUEDA]) else ""
                 t_formato = row[FORMATO] if not pd.isna(row[FORMATO]) else ""
                 t_metadato_autorizado = row[METADATO_AUTORIZADO] if not pd.isna(row[METADATO_AUTORIZADO]) else ""
@@ -96,7 +98,7 @@ if __name__ == "__main__":
                     "longitud_dato": t_longitud_dato,
                     "ayuda_busqueda" : t_ayuda_busqueda,
                     "formato" : t_formato,
-                    "metadato_autorizado" : t_metadato_autorizado,
+                    "metadato_autorizacion" : t_metadato_autorizado,
                     "frente" : t_frente,
                     "descripcion_homologada" : t_desc_homologada,
                     "metadato_homologado" : t_metadato_homologado
@@ -108,7 +110,7 @@ if __name__ == "__main__":
             "tipo_documento" : documento.tipo_documento,
             "tipo_objeto" : documento.tipo_objeto,
             "metadatos" : metadatos,
-            "sistemas":[{ "sistema" : "SAP" }]
+            "sistemas":[{ "sistema" : documento.sistema }]
         }
         json_data.append(top_json)
     
@@ -120,6 +122,7 @@ if __name__ == "__main__":
     # Start mongoDB atlas connection
 
     CONNECTION_STRING = "INSERT_YOUR_CREDENTIALS_HERE"
+    CONNECTION_STRING = "mongodb+srv://mongodb_admin:YQJrrYHKRsW7eEAt@cluster0.ciy9iep.mongodb.net"
 
     client = MongoClient(CONNECTION_STRING)
     driver = client["Metadatos"]
