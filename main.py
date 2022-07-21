@@ -122,7 +122,6 @@ if __name__ == "__main__":
     # Start mongoDB atlas connection
 
     CONNECTION_STRING = "INSERT_YOUR_CREDENTIALS_HERE"
-    CONNECTION_STRING = "mongodb+srv://mongodb_admin:YQJrrYHKRsW7eEAt@cluster0.ciy9iep.mongodb.net"
 
     client = MongoClient(CONNECTION_STRING)
     driver = client["Metadatos"]
