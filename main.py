@@ -1,13 +1,16 @@
 import os
 import pandas as pd
+from datetime import datetime
 import json
 from pymongo import MongoClient
 from classes import *
 
 # ENV
-EXCEL_FILE = "metadatos_2.xlsx"
+EXCEL_FILE = "metadatos_3.xlsx"
 JSON_FILE = "metadatos.json"
-
+ERRORS_FILE = "metadatos_no_validos.json"
+METADATOS_FILE = "catalogo_metadatos_homologados.json"
+TIMESTAMP = f"{datetime.now().year}-{(datetime.now().month):02d}-{(datetime.now().day):02d}T{datetime.now().hour}:{datetime.now().minute}:{datetime.now().second}:{datetime.now().microsecond}Z"
 
 
 def clear_screen():
@@ -30,34 +33,37 @@ if __name__ == "__main__":
     for index, row in excel_data.iterrows():
         t_tipo_documento = row[TIPO_DOCUMENTO]
         if t_tipo_documento not in tipo_document_acumulator:
-            t_tipo_objeto = row[TIPO_OBJETO] if not pd.isna(row[TIPO_OBJETO]) else "Sin tipo objeto"
-            t_sistema = row[SISTEMA] if not pd.isna(row[SISTEMA]) else "Sin sistema"
+            t_tipo_objeto = row[TIPO_OBJETO] if not pd.isna(row[TIPO_OBJETO]) else M_SIN_TIPO_OBJETO
+            t_sistema = row[SISTEMA] if not pd.isna(row[SISTEMA]) else M_SIN_SISTEMA
             tipo_document_acumulator.append(t_tipo_documento)
             t_d = Documento(t_tipo_documento, t_tipo_objeto, t_sistema)
-            json_acumulator.append(t_d)
-            
+            json_acumulator.append(t_d)    
+    
     # Contenedor final de los objetos a serializar
     json_data = []
+    documentos_validos = []
+    documentos_no_validos = []
+    
     for documento in json_acumulator:
         df = excel_data.query(f"{columns[TIPO_DOCUMENTO]} == '{documento.tipo_documento}'")
-        print(f"Inspecting {documento.tipo_documento}")
+        #print(f"Inspecting {documento.tipo_documento}")
         
         metadatos = []
         for index, row in df.iterrows():
             if not pd.isna(row[LLAVE]):
                 #print(f"Atributo llave encontrado: {row[LLAVE]}")
                 t_llave = row[LLAVE]
-                t_orden = int(row[ORDEN]) if not pd.isna(row[ORDEN]) else -1
-                t_metadato = row[METADATO] if not pd.isna(row[METADATO]) else ""
-                t_desc_campo = row[DESCRIPCION_CAMPO] if not pd.isna(row[DESCRIPCION_CAMPO]) else ""
-                t_tipo_dato = row[TIPO_DATO] if not pd.isna(row[TIPO_DATO]) else ""
-                t_longitud_dato = int(row[LONGITUD_DATO]) if not pd.isna(row[LONGITUD_DATO]) else ""
-                t_ayuda_busqueda = row[AYUDA_BUSQUEDA] if not pd.isna(row[AYUDA_BUSQUEDA]) else ""
-                t_formato = row[FORMATO] if not pd.isna(row[FORMATO]) else ""
-                t_metadato_autorizado = row[METADATO_AUTORIZADO] if not pd.isna(row[METADATO_AUTORIZADO]) else ""
-                t_frente = row[FRENTE] if not pd.isna(row[FRENTE]) else ""
-                t_desc_homologada = row[DESCRIPCION_HOMOLOGADA] if not pd.isna(row[DESCRIPCION_HOMOLOGADA]) else ""
-                t_metadato_homologado = row[METADATO_HOMOLOGADO] if not pd.isna(row[METADATO_HOMOLOGADO]) else ""
+                t_orden = int(row[ORDEN]) if not pd.isna(row[ORDEN]) else M_NULL
+                t_metadato = row[METADATO] if not pd.isna(row[METADATO]) else M_NULL
+                t_desc_campo = row[DESCRIPCION_CAMPO] if not pd.isna(row[DESCRIPCION_CAMPO]) else M_NULL
+                t_tipo_dato = row[TIPO_DATO] if not pd.isna(row[TIPO_DATO]) else M_NULL
+                t_longitud_dato = int(row[LONGITUD_DATO]) if not pd.isna(row[LONGITUD_DATO]) else M_NULL
+                t_ayuda_busqueda = row[AYUDA_BUSQUEDA] if not pd.isna(row[AYUDA_BUSQUEDA]) else M_NULL
+                t_formato = row[FORMATO] if not pd.isna(row[FORMATO]) else M_NULL
+                t_metadato_autorizado = row[METADATO_AUTORIZADO] if not pd.isna(row[METADATO_AUTORIZADO]) else M_NULL
+                t_frente = row[FRENTE] if not pd.isna(row[FRENTE]) else M_NULL
+                t_desc_homologada = row[DESCRIPCION_HOMOLOGADA] if not pd.isna(row[DESCRIPCION_HOMOLOGADA]) else M_NULL
+                t_metadato_homologado = row[METADATO_HOMOLOGADO] if not pd.isna(row[METADATO_HOMOLOGADO]) else M_NULL
                 
                 metadato = {
                     "llave" : True,
@@ -78,16 +84,16 @@ if __name__ == "__main__":
                 metadatos.append(metadato)
             else:
                 #print(f"Atributo NO LLAVE encontrado: {row[LLAVE]}")
-                t_metadato = row[METADATO] if not pd.isna(row[METADATO]) else ""
-                t_desc_campo = row[DESCRIPCION_CAMPO] if not pd.isna(row[DESCRIPCION_CAMPO]) else ""
-                t_tipo_dato = row[TIPO_DATO] if not pd.isna(row[TIPO_DATO]) else ""
-                t_longitud_dato = int(row[LONGITUD_DATO]) if not pd.isna(row[LONGITUD_DATO]) else ""
-                t_ayuda_busqueda = row[AYUDA_BUSQUEDA] if not pd.isna(row[AYUDA_BUSQUEDA]) else ""
-                t_formato = row[FORMATO] if not pd.isna(row[FORMATO]) else ""
-                t_metadato_autorizado = row[METADATO_AUTORIZADO] if not pd.isna(row[METADATO_AUTORIZADO]) else ""
-                t_frente = row[FRENTE] if not pd.isna(row[FRENTE]) else ""
-                t_desc_homologada = row[DESCRIPCION_HOMOLOGADA] if not pd.isna(row[DESCRIPCION_HOMOLOGADA]) else ""
-                t_metadato_homologado = row[METADATO_HOMOLOGADO] if not pd.isna(row[METADATO_HOMOLOGADO]) else ""
+                t_metadato = row[METADATO] if not pd.isna(row[METADATO]) else M_NULL
+                t_desc_campo = row[DESCRIPCION_CAMPO] if not pd.isna(row[DESCRIPCION_CAMPO]) else M_NULL
+                t_tipo_dato = row[TIPO_DATO] if not pd.isna(row[TIPO_DATO]) else M_NULL
+                t_longitud_dato = int(row[LONGITUD_DATO]) if not pd.isna(row[LONGITUD_DATO]) else M_NULL
+                t_ayuda_busqueda = row[AYUDA_BUSQUEDA] if not pd.isna(row[AYUDA_BUSQUEDA]) else M_NULL
+                t_formato = row[FORMATO] if not pd.isna(row[FORMATO]) else M_NULL
+                t_metadato_autorizado = row[METADATO_AUTORIZADO] if not pd.isna(row[METADATO_AUTORIZADO]) else M_NULL
+                t_frente = row[FRENTE] if not pd.isna(row[FRENTE]) else M_NULL
+                t_desc_homologada = row[DESCRIPCION_HOMOLOGADA] if not pd.isna(row[DESCRIPCION_HOMOLOGADA]) else M_NULL
+                t_metadato_homologado = row[METADATO_HOMOLOGADO] if not pd.isna(row[METADATO_HOMOLOGADO]) else M_NULL
                 
                 metadato = {
                     "llave" : False,
@@ -105,20 +111,44 @@ if __name__ == "__main__":
                     
                 }
                 metadatos.append(metadato)
+        
+        documento.metadatos = metadatos
+        #documento.sistema = 
+        
+        documento.validate()
+        
+        if(documento.valid):
+            documentos_validos.append(documento)
+        else:
+            documentos_no_validos.append(documento)
                 
-        top_json = {
+    # Formatear correctamente los documentos validos
+    for d in documentos_validos:
+        json_obj ={
             "tipo_documento" : documento.tipo_documento,
             "tipo_objeto" : documento.tipo_objeto,
             "metadatos" : metadatos,
-            "sistemas":[{ "sistema" : documento.sistema }]
+            "sistemas":[{ "sistema" : documento.sistema }]                
         }
-        json_data.append(top_json)
+        json_data.append(json_obj)
+    
+    # Crear el catálogo de metadatos de los documentos validos    
+    catalogo_metadatos = genera_catalogo_metadatos(documentos_validos)
+    catalogo_metadatos_file = open(METADATOS_FILE, "w")
+    catalogo_metadatos_file.writelines(json.dumps(catalogo_metadatos, ensure_ascii=False, indent = 4).replace('"%DATE_PH%"', f'ISODate("{TIMESTAMP}")'))
+    catalogo_metadatos_file.close()
     
     # Write the json object into the json file
     json_file = open(JSON_FILE, "w")
-    json_file.writelines(json.dumps(json_data, ensure_ascii=False, indent = 4))
+    json_file.writelines(json.dumps(json_data, ensure_ascii=False, indent = 4).replace('"null"','null'))
     json_file.close()           
         
+    # Escribir los documentos que no fueron válidos
+    
+    errors_file = open(ERRORS_FILE, "w")
+    errors_file.writelines(json.dumps(documentos_no_validos, ensure_ascii=False, indent=4, default=vars))
+    errors_file.close()
+    
     # Start mongoDB atlas connection
 
     CONNECTION_STRING = "INSERT_YOUR_CREDENTIALS_HERE"

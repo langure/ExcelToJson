@@ -11,3 +11,5 @@ venv
 # Ignore results
 *.json
 *.pyc
+metadatosGestorContenido.txt
+sistemasGestorContenido.txt

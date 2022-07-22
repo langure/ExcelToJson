@@ -1,2 +1,25 @@
 Traducción de un archivo de excel hacia un JSON jerárquico.
 
+Validaciones:
+
+*tipo_documento - obligatorio - string
+*tipo_objeto - obligatorio - string
+
+*metadatos - obligatorio - list
+*metadatos.metadato - obligatorio - string - debe existir en el catálogo de metadatos (no permite null o "" )
+*metadatos.campo - opcional - string
+*metadatos.descripcion_campo - opcional - string
+*metadatos.longitud_dato - opcional - int
+*metadatos.formato - opcional - string
+*metadatos.llave - opcional - bool
+*metadatos.orden - opcional - int - requerido cuando llave sea true (no permite números iguales)
+*metadatos.obligatorio - opcional - bool
+*metadatos.ayuda_busqueda - opcional - string
+*metadatos.metadato_filtro - opcional - bool
+*metadatos.metadato_autorizacion - opcional - bool
+*metadatos.frente - opcional - string
+*metadatos.descripcion_homologada - opcional - string
+*metadatos.metadato_homologado - opcional - string
+
+*sistemas - obligatorio - list
+*sistemas.sistema - obligatorio - string - debe existir en el catálogo de sistemas
