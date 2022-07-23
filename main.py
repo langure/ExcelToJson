@@ -22,6 +22,15 @@ def clear_screen():
 if __name__ == "__main__":
     clear_screen()
     
+    if os.path.exists(JSON_FILE):
+        os.remove(JSON_FILE)
+        print(f"The {JSON_FILE} file has been deleted successfully")
+    if os.path.exists(ERRORS_FILE):
+        os.remove(ERRORS_FILE)
+        print(f"The {ERRORS_FILE} file has been deleted successfully")
+    if os.path.exists(METADATOS_FILE):
+        os.remove(METADATOS_FILE)
+        print(f"The {METADATOS_FILE} file has been deleted successfully")    
     # Abrir el objeto de excel y cargarlo en memoria
     excel_document = pd.read_excel(EXCEL_FILE)
     columns = excel_document.columns
@@ -31,7 +40,7 @@ if __name__ == "__main__":
     tipo_document_acumulator = []
     json_acumulator = []
     for index, row in excel_data.iterrows():
-        t_tipo_documento = row[TIPO_DOCUMENTO]
+        t_tipo_documento = row[TIPO_DOCUMENTO] if not pd.isna(row[TIPO_DOCUMENTO]) else M_SIN_TIPO_DOCUMENTO
         if t_tipo_documento not in tipo_document_acumulator:
             t_tipo_objeto = row[TIPO_OBJETO] if not pd.isna(row[TIPO_OBJETO]) else M_SIN_TIPO_OBJETO
             t_sistema = row[SISTEMA] if not pd.isna(row[SISTEMA]) else M_SIN_SISTEMA
@@ -114,9 +123,7 @@ if __name__ == "__main__":
         
         documento.metadatos = metadatos
         #documento.sistema = 
-        
         documento.validate()
-        
         if(documento.valid):
             documentos_validos.append(documento)
         else:
@@ -125,10 +132,10 @@ if __name__ == "__main__":
     # Formatear correctamente los documentos validos
     for d in documentos_validos:
         json_obj ={
-            "tipo_documento" : documento.tipo_documento,
-            "tipo_objeto" : documento.tipo_objeto,
-            "metadatos" : metadatos,
-            "sistemas":[{ "sistema" : documento.sistema }]                
+            "tipo_documento" : d.tipo_documento,
+            "tipo_objeto" : d.tipo_objeto,
+            "metadatos" : d.metadatos,
+            "sistemas":[{ "sistema" : d.sistema }]                
         }
         json_data.append(json_obj)
     
@@ -152,6 +159,7 @@ if __name__ == "__main__":
     # Start mongoDB atlas connection
 
     CONNECTION_STRING = "INSERT_YOUR_CREDENTIALS_HERE"
+    
 
     client = MongoClient(CONNECTION_STRING)
     driver = client["Metadatos"]
@@ -163,4 +171,7 @@ if __name__ == "__main__":
     # Write the new data
     collection.insert_many(json_data)
 
+    print(f"Total de documentos del excel -> {len(json_acumulator)}")
+    print(f"Total de documentos válidos -> {len(documentos_validos)}")
+    print(f"Total de documentos NO válidos -> {len(documentos_no_validos)}")
     print("Process finalized")

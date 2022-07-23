@@ -19,7 +19,7 @@ METADATO_HOMOLOGADO = 13
 SISTEMA = 14
 
 M_SIN_SISTEMA = "Sin sistema"
-M_TIPO_DOCUMENTO = "Sin tipo documento"
+M_SIN_TIPO_DOCUMENTO = "Sin tipo documento"
 M_SIN_TIPO_OBJETO = "Sin tipo objeto"
 M_SIN_METADATOS = "Sin metadatos"
 M_NO_VALIDADO = "No validado"
@@ -41,8 +41,8 @@ class Documento:
         if len(self.tipo_objeto) < 1 or self.tipo_objeto == M_SIN_TIPO_OBJETO:
             self.valid_message = M_SIN_TIPO_OBJETO
             return
-        if len(self.tipo_documento) < 1 or self.tipo_documento == M_TIPO_DOCUMENTO:
-            self.valid_message = M_TIPO_DOCUMENTO
+        if len(self.tipo_documento) < 1 or self.tipo_documento == M_SIN_TIPO_DOCUMENTO:
+            self.valid_message = M_SIN_TIPO_DOCUMENTO
             return        
         if len(self.metadatos) < 1:
             self.valid_message = M_SIN_METADATOS
@@ -57,11 +57,43 @@ class Documento:
                 return
             if metadato["metadato_homologado"] == M_NULL:
                 self.valid_message = "Metadato homologado en null"
-                return
-        
+                return        
+
         self.valid = True
         self.valid_message = "OK"
+        self.verifica_campos_llave()
+        self.verifica_campos_duplicados()
         
+    def verifica_campos_duplicados(self):
+        acc_campos = []
+        for m in self.metadatos:
+            if not m["campo"] in acc_campos:
+                acc_campos.append(m["campo"])
+            else:
+                self.valid = False
+                self.valid_message = f"Campos duplicados: {m['campo']}"
+            
+    def verifica_campos_llave(self):
+        acc_llave = []
+        for m in self.metadatos:
+            if "llave" in m and m["llave"]:                
+                if not "orden" in m:
+                    self.valid = False
+                    self.valid_message = f"Marcado como llave pero sin orden -> {m['campo']}"
+                    return
+                if m["orden"] not in acc_llave:
+                    acc_llave.append(m["orden"])
+                else:
+                    self.valid = False
+                    self.valid_message = f"Error en llaves duplicadas"
+                    return
+        if len(acc_llave) < 1:
+            self.valid = False
+            self.valid_message = f"No tiene ninguna llave"
+        
+        
+
+
 
 def genera_catalogo_metadatos(documentos):
     metadatos = []
@@ -69,12 +101,14 @@ def genera_catalogo_metadatos(documentos):
     for d in documentos:
         if d.valid:
             for m in d.metadatos:
-                if m["metadato_homologado"] not in acc:
-                    acc.append(m["metadato_homologado"])
+                if m["metadato"] == "Archivo":
+                    print("Archivo")
+                if m["metadato"] not in acc:
+                    acc.append(m["metadato"])
                     metadatos.append(
                         {
                             "id_metadato" : str(uuid.uuid4()),
-                            "metadato" : m["metadato_homologado"],
+                            "metadato" : m["metadato"],
                             "fecha_registro" : "%DATE_PH%"
                         }
                     )        
