@@ -1,0 +1,206 @@
+/* 1 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023df"),
+    "id_sistema" : "fe7dcdd5-2a5c-4a45-93d1-ce42904517b7",
+    "sistema" : "alcoholes_v2",
+    "descripcion" : "Alcoholes v2",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e0"),
+    "id_sistema" : "222889a8-b3ec-4786-b83e-d4406a5043dd",
+    "sistema" : "declaracion_de_nomina_mensual",
+    "descripcion" : "Declaración de nómina mensual",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 3 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e1"),
+    "id_sistema" : "33f50bee-70ce-44de-a4ae-d4f46dea973e",
+    "sistema" : "declaraciones_en_linea",
+    "descripcion" : "Declaraciones en Línea",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 4 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e2"),
+    "id_sistema" : "b579a1b9-b8c6-419e-8477-97f0d0573740",
+    "sistema" : "expediente_digital_de_bienes_inmuebles",
+    "descripcion" : "Expediente digital de bienes inmuebles",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 5 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e3"),
+    "id_sistema" : "55816cad-1283-46ab-baad-0879a2e15c32",
+    "sistema" : "facturacion_electronica",
+    "descripcion" : "Facturacion Electronica",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 6 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e4"),
+    "id_sistema" : "6016e859-feb6-45ed-ba2f-8522aa5ddd71",
+    "sistema" : "imagenes_de_activos_fijos",
+    "descripcion" : "Imagenes de Activos Fijos",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 7 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e5"),
+    "id_sistema" : "6677878f-d5eb-40f9-b909-575e1a691268",
+    "sistema" : "isaac_-_constancia_de_acreditacion",
+    "descripcion" : "ISAAC - Constancia de acreditación",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 8 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e6"),
+    "id_sistema" : "8f47a693-695c-47ce-94c7-c14e27fea645",
+    "sistema" : "mantenimiento_vehicular_web",
+    "descripcion" : "Mantenimiento Vehicular Web",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 9 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e7"),
+    "id_sistema" : "efeb592e-c08e-4b9e-bedc-07a86e862f0d",
+    "sistema" : "portal_de_beneficiarios_de_alcoholes",
+    "descripcion" : "Portal de Beneficiarios de Alcoholes",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 10 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e8"),
+    "id_sistema" : "9ef322f3-e451-4184-9df2-fc3669213f3a",
+    "sistema" : "portal_de_tramites_en_materia_de_bebidas_alcoholicas",
+    "descripcion" : "Portal de trámites en materia de bebidas alcohólicas",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 11 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023e9"),
+    "id_sistema" : "50a0bd00-67b9-453a-bcf9-3fa4e63ac70c",
+    "sistema" : "portal_de_trámites_y_servicios_sateg",
+    "descripcion" : "Portal de Trámites y Servicios SATEG",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 12 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023ea"),
+    "id_sistema" : "e9907d97-2d42-4c80-b423-627cda71975f",
+    "sistema" : "retencion_de_plataformas_tecnologicas_mensual",
+    "descripcion" : "Retención de plataformas tecnológicas mensual",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 13 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023ec"),
+    "id_sistema" : "13988105-4980-4336-b580-328a59ef1622",
+    "sistema" : "sistema_adecuaciones_presupuestales",
+    "descripcion" : "Sistema Adecuaciones Presupuestales",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 14 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023ed"),
+    "id_sistema" : "4f61bb54-1c00-4f35-bf20-c8e0d283ac4d",
+    "sistema" : "sistema_biometricos",
+    "descripcion" : "Sistema Biometricos",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 15 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023ee"),
+    "id_sistema" : "726cf21e-afb8-4d1d-811d-5558b61d1849",
+    "sistema" : "sistema_de_evaluacion_al_desempenio_de_los_empleados_-_constancia_de_calificacion_de_evaluacion_al_desempenio",
+    "descripcion" : "Sistema de Evaluación al Desempeño de los Empleados - Constancia de Calificación de Evaluación al desempeño",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 16 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023ef"),
+    "id_sistema" : "275bddab-5e55-49f7-b183-8e7b6fad486d",
+    "sistema" : "sistema_de_gestion_de_tramites_de_pago",
+    "descripcion" : "Sistema de Gestión de Trámites de Pago",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 17 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023f0"),
+    "id_sistema" : "14a35810-59f4-4d17-a320-c03c63379179",
+    "sistema" : "sistema_de_informacion_dga",
+    "descripcion" : "Sistema de Información DGA",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 18 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023f1"),
+    "id_sistema" : "25dae936-8595-4a13-a393-9f04ae564c40",
+    "sistema" : "sistema_integral_de_auditoria_fiscal",
+    "descripcion" : "Sistema Integral de Auditoría Fiscal",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 19 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023f2"),
+    "id_sistema" : "bd899722-f8c3-4bf0-884d-369d2948efe9",
+    "sistema" : "sistema_integral_de_verificacion_al_comercio_exterior",
+    "descripcion" : "Sistema Integral de Verificación al Comercio Exterior",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 20 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023f3"),
+    "id_sistema" : "2202f0de-7c88-43d2-b80b-0ce3777af476",
+    "sistema" : "sistema_sed",
+    "descripcion" : "Sistema SED",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 21 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023f4"),
+    "id_sistema" : "530b4d22-694c-4422-add8-6b32d850ccc0",
+    "sistema" : "solicitud_de_partidas_restringidas",
+    "descripcion" : "Solicitud de Partidas Restringidas",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 22 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023f5"),
+    "id_sistema" : "22b240c2-de9d-48a4-9565-f2e7ec46827c",
+    "sistema" : "trámites_de_alcoholes",
+    "descripcion" : "Trámites de alcoholes",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}
+
+/* 23 */
+{
+    "_id" : ObjectId("62cc6109813300006b0023eb"),
+    "id_sistema" : "f61a9926-8427-423c-98c0-8490acae14e6",
+    "sistema" : "SAP",
+    "descripcion" : "sap",
+    "fecha_registro" : ISODate("2022-07-07T12:00:00.000Z")
+}

@@ -1,0 +1,74 @@
+[
+    {
+        "id_sistema": "8670a585-c2e6-4409-bb36-4ff451b2d5d4",
+        "sistema": "auditoria_fiscal",
+        "descripcion": "auditoria_fiscal",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "6af3e464-c197-4d01-8095-1e0836586764",
+        "sistema": "biometricos_bi",
+        "descripcion": "biometricos_bi",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "c1e7e6cb-2302-47fe-b603-1dd578fd4362",
+        "sistema": "comercio_exterior",
+        "descripcion": "comercio_exterior",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "8b088ce1-5876-493f-afa7-05f8c2f04ec7",
+        "sistema": "expediente_digital_de_bienes_inmuebles",
+        "descripcion": "expediente_digital_de_bienes_inmuebles",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "a24f7668-0e82-4bef-80a5-ad2cc04892ff",
+        "sistema": "imagenes_de_activos_fijos",
+        "descripcion": "imagenes_de_activos_fijos",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "ee93131e-ddf4-4945-8078-6e9390c08d87",
+        "sistema": "issac",
+        "descripcion": "issac",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "8f3e93e5-4224-4994-8195-c6f11a386098",
+        "sistema": "sap",
+        "descripcion": "sap",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "b15ac4a1-1e86-49ed-94ea-e72a2b4e9cfe",
+        "sistema": "servicios_profesionales_sp",
+        "descripcion": "servicios_profesionales_sp",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "42dfb96e-bfda-4620-85fd-85d5d85bdc17",
+        "sistema": "sistema_de_adecuaciones_presupuestales_ap",
+        "descripcion": "sistema_de_adecuaciones_presupuestales_ap",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "ca1f0f8b-2bfe-41ac-9d50-58bdb327b7c2",
+        "sistema": "sistema_de_evaluacion_al_desempeno_de_los_empleados ",
+        "descripcion": "sistema_de_evaluacion_al_desempeno_de_los_empleados ",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "49ba3090-a1c1-4047-ad75-ca28b1b29777",
+        "sistema": "sistema_de_Informacion_dga_sid",
+        "descripcion": "sistema_de_Informacion_dga_sid",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    },
+    {
+        "id_sistema": "757beaf0-d7d9-491a-a7da-48558ea81a29",
+        "sistema": "sistema_sed",
+        "descripcion": "sistema_sed",
+        "fecha_registro": ISODate("2022-08-03T20:9:33:796848Z")
+    }
+]

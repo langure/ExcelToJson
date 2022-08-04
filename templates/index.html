@@ -1,0 +1,30 @@
+<html>  
+ <head>  
+  <title>Recepción de archivos metadatos</title>  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+ </head>  
+ <body> 
+<div class="container"> 
+    <h2>Recepción de archivos metadatos</h2>
+    <div class="dropzone">
+        <div class="dz-message needsclick">
+            <h1>Arrastre aquí el archivo excel para comenzar.</h1>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+    $(".dropzone").dropzone({
+      url: '/upload',
+      width: 300,
+      height: 300, 
+      progressBarWidth: '100%',
+      maxFileSize: '5MB'
+    })
+});
+</script> 
+ </body>  
+</html> 
