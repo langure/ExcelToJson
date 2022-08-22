@@ -7,22 +7,24 @@ from classes import *
 
 # ENV
 EXCEL_FILE = "metadatos_1.xlsx"
-JSON_FILE = "1_metadatos.json"
-ERRORS_FILE = "1_metadatos_no_validos.json"
-METADATOS_FILE = "1_catalogo_metadatos_homologados.json"
+JSON_FILE = "./files/1_metadatos.json"
+ERRORS_FILE = "./files/1_metadatos_no_validos.json"
+METADATOS_FILE = "./files/1_catalogo_metadatos_homologados.json"
 SISTEMAS_FILE = "sistemasGestorContenido.txt"
-SISTEMAS_CATALOGO_FILE = "1_catalogo_sistemas.txt"
+SISTEMAS_CATALOGO_FILE = "./files/1_catalogo_sistemas.txt"
 TIMESTAMP = f"{datetime.now().year}-{(datetime.now().month):02d}-{(datetime.now().day):02d}T{datetime.now().hour}:{datetime.now().minute}:{datetime.now().second}:{datetime.now().microsecond}Z"
 
 def clear_screen():
     if os.name == 'posix':
         _ = os.system('clear')
-    else:    
+    else:
         _ = os.system('cls')
 
-if __name__ == "__main__":
+def doMain(metadatos_source_file):
     clear_screen()
-    
+
+    if not os.path.exists('./files'):
+        os.makedirs('./files')
     if os.path.exists(JSON_FILE):
         os.remove(JSON_FILE)
         print(f"The {JSON_FILE} file has been deleted successfully")
@@ -35,8 +37,9 @@ if __name__ == "__main__":
     if os.path.exists(SISTEMAS_CATALOGO_FILE):
         os.remove(SISTEMAS_CATALOGO_FILE)
         print(f"The {SISTEMAS_CATALOGO_FILE} file has been deleted successfully") 
+        
     # Abrir el objeto de excel y cargarlo en memoria
-    excel_document = pd.read_excel(EXCEL_FILE)
+    excel_document = pd.read_excel(metadatos_source_file)
     columns = excel_document.columns
     excel_data = pd.DataFrame(excel_document, columns = columns)
 
@@ -53,14 +56,14 @@ if __name__ == "__main__":
             t_d = Documento(t_tipo_documento, t_tipo_objeto, t_sistema, t_multiple)
             tipo_document_acumulator.append(t_tipo_documento)
             json_acumulator.append(t_d)    
-    
+
     # Contenedor final de los objetos a serializar
     json_data = []
     documentos_validos = []
     documentos_no_validos = []
-    
+
     sistemas_autorizados = lee_sistemas_autorizados(SISTEMAS_FILE)
-    
+
     for documento in json_acumulator:
         df = excel_data.query(f"{columns[TIPO_DOCUMENTO]} == '{documento.tipo_documento}'")
         #print(f"Inspecting {documento.tipo_documento}")
@@ -88,14 +91,24 @@ if __name__ == "__main__":
             "sistemas":[{ "sistema" : d.sistema }],                       
         }
         json_data.append(json_obj)
-    
+
+    total_documentos = len(json_acumulator)
+    total_documentos_validos = len(documentos_validos)
+    total_documentos_no_validos = len(documentos_no_validos)
+    ruta_de_metadatos_json = JSON_FILE
+    ruta_de_catalogo_metadatos_homologados = METADATOS_FILE
     print(f"Total de documentos del excel -> {len(json_acumulator)}")
     print(f"Total de documentos válidos -> {len(documentos_validos)}")
     print(f"Total de documentos NO válidos -> {len(documentos_no_validos)}")
-    
-    write_output(SISTEMAS_CATALOGO_FILE, METADATOS_FILE, JSON_FILE, ERRORS_FILE, documentos_validos, sistemas_autorizados, json_data, documentos_no_validos)
-    
-    # Start mongoDB atlas connection
-    upload_to_mongodb(json_data, commit=False)    
 
+    write_output(SISTEMAS_CATALOGO_FILE, METADATOS_FILE, JSON_FILE, ERRORS_FILE, documentos_validos, sistemas_autorizados, json_data, documentos_no_validos)
+
+    # Start mongoDB atlas connection
+    upload_to_mongodb(json_data, commit=True)    
+    
+     
+    
+
+if __name__ == "__main__":
+    doMain(EXCEL_FILE)
     print("Process finalized")

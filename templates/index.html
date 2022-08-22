@@ -1,30 +1,123 @@
 <html>  
  <head>  
   <title>Recepción de archivos metadatos</title>  
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
- </head>  
- <body> 
-<div class="container"> 
-    <h2>Recepción de archivos metadatos</h2>
-    <div class="dropzone">
-        <div class="dz-message needsclick">
-            <h1>Arrastre aquí el archivo excel para comenzar.</h1>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</head>  
+<body class="d-flex flex-column h-100"> 
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="#" class="nav-link px-2 text-white">Recepción de archivos para metadatos</a></li>
+            </ul>    
+            <div class="text-end">
+            </div>
+          </div>
         </div>
+      </header>    
+      <HR>
+        <div class="alert alert-primary" role="alert" style="display:none" id="messageArea">
+            
+          </div>
+        <div class="container">
+            <div class="row row-eq-height">
+                <div class="col-md-4 offset-md-2">
+                    <div class="dropzone">
+                        <div class="dz-message needsclick">
+                            <h3>Arrastre aquí el archivo excel para comenzar.</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 offset-md-1">
+                    <div class="btn-group-vertical gap-1" role="group" style="width: 100%;">
+                        <a onclick="onNewUpload()" href="#" class="btn btn-danger btn-lg btn-block">Cargar archivo nuevo</a>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="metadatos();" disabled id="button1">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner1" style="visibility: hidden;"></span>
+                            Metadatos
+                        </button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="catalogoMetadatosHomologados();" disabled id="button2">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner2" style="visibility: hidden;"></span>
+                            Catálogo Metadatos Homologados
+                        </button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="metadatosNoValidos();" disabled id="button3">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner3" style="visibility: hidden;"></span>
+                            Metadatos No Validos
+                        </button>
+                      </div>
+
+                </div>                
+            </div>
+        </div>
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <span class="text-muted">Metadatos - 2022</span>
     </div>
-</div>
+  </footer>
 <script>
+Dropzone.autoDiscover = false;
 $(document).ready(function(){
     $(".dropzone").dropzone({
       url: '/upload',
       width: 300,
       height: 300, 
       progressBarWidth: '100%',
-      maxFileSize: '5MB'
+      maxFileSize: '5MB',
+      maxFiles : 1,
+      clickable : false,
+      acceptedFiles : '.xlsx',
+      renameFile : function(file){
+        return "metadatos_up.xlsx";
+      },
+      init: function(){
+        this.on("addedfile", file => {
+            console.log("A new file has been added");
+        })
+      },
+      drop: function(){
+        console.log("Just delivered!!!");
+        document.getElementById("spinner1").style.visibility = "visible";
+        document.getElementById("spinner2").style.visibility = "visible";
+        document.getElementById("spinner3").style.visibility = "visible";
+        document.getElementById("messageArea").style.display = "block"
+        document.getElementById("messageArea").innerHTML = "Cargando el documento, espere por favor."
+
+      },
+      success: function(){
+        console.log("Finished");
+        document.getElementById("spinner1").style.visibility = "hidden";
+        document.getElementById("spinner2").style.visibility = "hidden";
+        document.getElementById("spinner3").style.visibility = "hidden";
+        $('#button1').prop('disabled', false);
+        $('#button2').prop('disabled', false);
+        $('#button3').prop('disabled', false);
+        document.getElementById("messageArea").style.visibility = "visible"
+        document.getElementById("messageArea").className = "alert alert-success"
+        document.getElementById("messageArea").innerHTML = "Los archivos ya se pueden descargar."
+      }
     })
 });
-</script> 
+
+function onNewUpload(){
+    location.reload();
+}
+function metadatos(){
+    window.location.href = "/metadatos"
+}
+function catalogoMetadatosHomologados(){
+    window.location.href = "/catalogoMetadatosHomologados"
+}
+function metadatosNoValidos(){
+    window.location.href = "/metadatosNoValidos"
+}
+</script>
+
+ 
+
  </body>  
 </html> 
