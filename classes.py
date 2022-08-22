@@ -3,6 +3,13 @@ from pymongo import MongoClient
 import json
 from datetime import datetime
 import pandas as pd
+import os.path
+
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
 # Constants
 
@@ -31,6 +38,10 @@ M_SIN_TIPO_OBJETO = "Sin tipo objeto"
 M_SIN_METADATOS = "Sin metadatos"
 M_NO_VALIDADO = "No validado"
 M_NULL = "null"
+
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+SAMPLE_SPREADSHEET_ID = '1PZQnb9OIBUmXwvl2kHsK5bS0pMc5ILuJs5ApOczNBL0'
+SAMPLE_RANGE_NAME = 'MongoDB'
 
 TIMESTAMP = f"{datetime.now().year}-{(datetime.now().month):02d}-{(datetime.now().day):02d}T{datetime.now().hour}:{datetime.now().minute}:{datetime.now().second}:{datetime.now().microsecond}Z"
 
@@ -178,7 +189,44 @@ def write_output(sistemas_catalogo_filename, metadatos_filename, json_filename, 
     errors_file.writelines(json.dumps(documentos_no_validos, ensure_ascii=False, indent=4, default=vars))
     errors_file.close()
     
-def extract_metadato(row, es_llave):
+def extract_metadato_google(row, es_llave):
+
+    t_campo = row[CAMPO] if not pd.isna(row[CAMPO]) else M_NULL
+    t_desc_campo = row[DESCRIPCION_CAMPO] if not pd.isna(row[DESCRIPCION_CAMPO]) else M_NULL
+    t_tipo_dato = row[TIPO_DATO] if not pd.isna(row[TIPO_DATO]) else M_NULL
+    #t_longitud_dato = int(row[LONGITUD_DATO]) if not pd.isna(row[LONGITUD_DATO]) else M_NULL
+    t_longitud_dato = int(row[LONGITUD_DATO]) if len(row[LONGITUD_DATO]) > 1 else M_NULL
+    t_ayuda_busqueda = row[AYUDA_BUSQUEDA] if not pd.isna(row[AYUDA_BUSQUEDA]) else M_NULL
+    t_formato = row[FORMATO] if not pd.isna(row[FORMATO]) else M_NULL
+    t_metadato_autorizado =  True if not pd.isna(row[MULTIPLE]) else False
+    t_frente = row[FRENTE] if not pd.isna(row[FRENTE]) else M_NULL
+    t_desc_homologada = row[DESCRIPCION_HOMOLOGADA] if not pd.isna(row[DESCRIPCION_HOMOLOGADA]) else M_NULL
+    t_tipo_objeto_autorizacion = row[TIPO_OBJETO_AUTORIZACION] if not pd.isna(row[TIPO_OBJETO_AUTORIZACION]) else M_NULL
+    t_metadato = row[METADATO] if not pd.isna(row[METADATO]) else M_NULL
+    
+    metadato = {
+        "llave" : False,
+        "campo" : t_campo,
+        "metadato" : t_metadato,
+        "descripcion_campo" : t_desc_campo,
+        "tipo_dato" : t_tipo_dato,
+        "longitud_dato": t_longitud_dato,
+        "ayuda_busqueda" : t_ayuda_busqueda,
+        "formato" : t_formato,
+        "metadato_autorizacion" : t_metadato_autorizado,
+        "frente" : t_frente,
+        "descripcion_homologada" : t_desc_homologada, 
+        "tipo_objeto_autorizacion" : t_tipo_objeto_autorizacion                  
+    }
+    
+    if es_llave:        
+        t_orden = int(row[ORDEN]) if not pd.isna(row[ORDEN]) else M_NULL
+        metadato["llave"] = True
+        metadato["orden"] = t_orden
+    
+    return metadato
+
+def extract_metadato_excel(row, es_llave):
 
     t_campo = row[CAMPO] if not pd.isna(row[CAMPO]) else M_NULL
     t_desc_campo = row[DESCRIPCION_CAMPO] if not pd.isna(row[DESCRIPCION_CAMPO]) else M_NULL
@@ -214,4 +262,40 @@ def extract_metadato(row, es_llave):
     
     return metadato
         
-      
+def read_from_google():
+    creds = None
+    panda = None
+    
+    if os.path.exists('token.json'):
+        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open('token.json', 'w') as token:
+            token.write(creds.to_json())
+    try:
+        service = build('sheets', 'v4', credentials=creds)
+
+        # Call the Sheets API
+        sheet = service.spreadsheets()
+        result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                                    range=SAMPLE_RANGE_NAME).execute()
+        values = result.get('values', [])
+
+        if not values:
+            print("No data found")
+            return panda
+
+        #for row in values:
+        #     print('%s, %s' % (row[0], row[4]))
+        panda = pd.DataFrame(values[1:], columns=values[0])
+    except HttpError as err:
+        print(err.error_details)
+        print(err.reason)
+        return panda
+    return panda

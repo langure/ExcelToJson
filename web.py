@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, render_template, jsonify, request, send_file
 from werkzeug.utils import secure_filename
 import os
@@ -40,7 +41,13 @@ def returnMetadatosNoValidos():
 @app.route('/')
 def main():
     return render_template('index.html')
-       
+
+@app.route("/create", methods=["GET"])
+def create():
+    if request.method == "GET":
+        doMainReadingFromGoogle()
+        return jsonify("ok")
+        
 @app.route("/upload",methods=["POST","GET"])
 def upload():
 

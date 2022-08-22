@@ -22,6 +22,11 @@
         </div>
       </header>    
       <HR>
+        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="create();"  id="button4">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="visibility: hidden;"></span>
+          Generar json desde Google Spreadsheets
+      </button>
+      <HR>
         <div class="alert alert-primary" role="alert" style="display:none" id="messageArea">
             
           </div>
@@ -81,27 +86,35 @@ $(document).ready(function(){
       },
       drop: function(){
         console.log("Just delivered!!!");
-        document.getElementById("spinner1").style.visibility = "visible";
-        document.getElementById("spinner2").style.visibility = "visible";
-        document.getElementById("spinner3").style.visibility = "visible";
-        document.getElementById("messageArea").style.display = "block"
-        document.getElementById("messageArea").innerHTML = "Cargando el documento, espere por favor."
+        processStart();
 
       },
       success: function(){
         console.log("Finished");
-        document.getElementById("spinner1").style.visibility = "hidden";
-        document.getElementById("spinner2").style.visibility = "hidden";
-        document.getElementById("spinner3").style.visibility = "hidden";
-        $('#button1').prop('disabled', false);
-        $('#button2').prop('disabled', false);
-        $('#button3').prop('disabled', false);
-        document.getElementById("messageArea").style.visibility = "visible"
-        document.getElementById("messageArea").className = "alert alert-success"
-        document.getElementById("messageArea").innerHTML = "Los archivos ya se pueden descargar."
+        processSuccess();
       }
     })
 });
+
+function processSuccess(){
+  document.getElementById("spinner1").style.visibility = "hidden";
+  document.getElementById("spinner2").style.visibility = "hidden";
+  document.getElementById("spinner3").style.visibility = "hidden";
+  $('#button1').prop('disabled', false);
+  $('#button2').prop('disabled', false);
+  $('#button3').prop('disabled', false); 
+  document.getElementById("messageArea").style.visibility = "visible"
+  document.getElementById("messageArea").className = "alert alert-success"
+  document.getElementById("messageArea").innerHTML = "Los archivos ya se pueden descargar."
+}
+
+function processStart(){
+  document.getElementById("spinner1").style.visibility = "visible";
+  document.getElementById("spinner2").style.visibility = "visible";
+  document.getElementById("spinner3").style.visibility = "visible";
+  document.getElementById("messageArea").style.display = "block"
+  document.getElementById("messageArea").innerHTML = "Cargando el documento, espere por favor."
+}
 
 function onNewUpload(){
     location.reload();
@@ -114,6 +127,22 @@ function catalogoMetadatosHomologados(){
 }
 function metadatosNoValidos(){
     window.location.href = "/metadatosNoValidos"
+}
+function create(){
+  processStart();
+  var xhr = new XMLHttpRequest();
+  xhr.withCredentials = true;
+
+  xhr.addEventListener("readystatechange", function() {
+    if(this.readyState === 4) {
+      console.log(this.responseText);
+      processSuccess();
+    }
+  });
+
+  xhr.open("GET", "/create");
+
+  xhr.send();
 }
 </script>
 
