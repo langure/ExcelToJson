@@ -115,6 +115,12 @@ def upload():
            print('Solo archivos excel xlsx') 
         msg = 'Archivo recibido'    
     return jsonify(msg)
+
+@app.route('/api/archivo')
+def api_archivo():
+   if request.method == "GET":
+        downloads = os.path.join(app.root_path, app.config['DOWNLOAD_FOLDER'])
+        return send_file(os.path.join(app.config['DOWNLOAD_FOLDER'],'Archive.zip'), as_attachment=True)
  
 if __name__ == "__main__":
     app.run(debug=True)
