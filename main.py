@@ -157,7 +157,7 @@ def doMainReadingFromGoogle():
 
     for documento in json_acumulator:
         df = excel_data.query(f"{columns[TIPO_DOCUMENTO]} == '{documento.tipo_documento}'")
-        #print(f"Inspecting {documento.tipo_documento}")
+        print(f"Inspecting {documento.tipo_documento}")
         
         metadatos = []        
         for index, row in df.iterrows():
@@ -201,6 +201,6 @@ def doMainReadingFromGoogle():
     
 
 if __name__ == "__main__":
-    doMain(EXCEL_FILE)
-    #doMainReadingFromGoogle()
+    #doMain(EXCEL_FILE)
+    doMainReadingFromGoogle()
     print("Process finalized")
