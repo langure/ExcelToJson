@@ -6,12 +6,18 @@ from pymongo import MongoClient
 from classes import *
 
 # ENV
+
+#Reference to server directory:
+from pathlib import Path
+THIS_FOLDER = Path(__file__).parent.resolve()
+
 EXCEL_FILE = "metadatos_1.xlsx"
-JSON_FILE = "./files/1_metadatos.json"
-ERRORS_FILE = "./files/1_metadatos_no_validos.json"
-METADATOS_FILE = "./files/1_catalogo_metadatos_homologados.json"
-SISTEMAS_FILE = "sistemasGestorContenido.txt"
-SISTEMAS_CATALOGO_FILE = "./files/1_catalogo_sistemas.txt"
+JSON_FILE = THIS_FOLDER / "files" / "1_metadatos.json"
+ERRORS_FILE = THIS_FOLDER / "files" / "1_metadatos_no_validos.json"
+METADATOS_FILE = THIS_FOLDER / "files" / "1_catalogo_metadatos_homologados.json"
+SISTEMAS_FILE = THIS_FOLDER/ "sistemasGestorContenido.txt"
+SISTEMAS_CATALOGO_FILE = THIS_FOLDER / "files" / "1_catalogo_sistemas.txt"
+
 TIMESTAMP = f"{datetime.now().year}-{(datetime.now().month):02d}-{(datetime.now().day):02d}T{datetime.now().hour}:{datetime.now().minute}:{datetime.now().second}:{datetime.now().microsecond}Z"
 
 def clear_screen():
@@ -109,8 +115,8 @@ def doMain(metadatos_source_file):
 def doMainReadingFromGoogle():
     clear_screen()
 
-    if not os.path.exists('./files'):
-        os.makedirs('./files')
+    if not os.path.exists(THIS_FOLDER / "files"):
+        os.makedirs(THIS_FOLDER / "files")
     if os.path.exists(JSON_FILE):
         os.remove(JSON_FILE)
         print(f"The {JSON_FILE} file has been deleted successfully")

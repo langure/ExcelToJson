@@ -10,10 +10,14 @@ from datetime import datetime
 app = Flask(__name__)
        
 app.secret_key = "flsldfj399dksdf-fj39fls.vicsla92kdan-mcd83jkksdh"
-       
- 
-UPLOAD_FOLDER = 'uploads'
-DOWNLOAD_FOLDER = 'files'
+
+#Reference to server directory:
+from pathlib import Path
+THIS_FOLDER = Path(__file__).parent.resolve()
+
+UPLOAD_FOLDER = THIS_FOLDER / "uploads"
+DOWNLOAD_FOLDER = THIS_FOLDER / "files"
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
