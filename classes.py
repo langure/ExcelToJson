@@ -12,6 +12,10 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google.oauth2 import service_account
 
+#Reference to server directory:
+from pathlib import Path
+THIS_FOLDER = Path(__file__).parent.resolve()
+
 # Constants
 
 TIPO_DOCUMENTO = 0
@@ -302,8 +306,9 @@ def read_from_google():
         # Save the credentials for the next run
     #    with open('token.json', 'w') as token:
     #       token.write(creds.to_json())
+    auth_file = THIS_FOLDER / "triple-rookery-360218-1f50cc59d0e9.json"
     try:
-        creds = service_account.Credentials.from_service_account_file('triple-rookery-360218-1f50cc59d0e9.json', scopes=SCOPES)
+        creds = service_account.Credentials.from_service_account_file(auth_file, scopes=SCOPES)
         service = build('sheets', 'v4', credentials=creds)
 
         # Call the Sheets API
