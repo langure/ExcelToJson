@@ -27,6 +27,12 @@ ALLOWED_EXTENSIONS = set(['xlsx'])
 def allowed_file(filename):
  return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+def read_local_plain_text(file_name):
+    with open(file_name, "r") as file:
+        data = file.read()
+    return data.replace("\n", "|")
+
 def read_local_json(json_file_name):
         json_file = open(json_file_name, "r")
         data = json_file.read()
@@ -102,7 +108,43 @@ def create():
     if request.method == "GET":
         doMainReadingFromGoogle()
         return json.dumps({'success':True, 'reason' : 'File generated ok'}), 200, {'ContentType':'application/json'}
-        
+
+
+# create a route to get the contents of the sistemasGestorContenido.txt file
+@app.route('/api/sistemas')
+def api_sistemas():
+    if request.method == "GET":
+        token = request.args.get('token')
+        if not token or token != app.secret_key:
+            return json.dumps({'success':False, 'reason' : 'Not authorized'}), 401, {'ContentType':'application/json'}
+        data = read_local_plain_text(SISTEMAS_FILE)
+        return data, 200, {'ContentType':'application/json'}
+
+# create a post route that will receive a param called "sistema", will read the file sistemasGestorContenido.txt remove the sistema that matches with the param and write
+# the new content to the file
+
+@app.route('/api/deleteSistema', methods=["POST"])
+def api_sistemas_post():
+    if request.method == "POST":
+        token = request.args.get('token')
+        if not token or token != app.secret_key:
+            return json.dumps({'success':False, 'reason' : 'Not authorized'}), 401, {'ContentType':'application/json'}
+        sistema = request.form.get('sistema')
+        if not sistema:
+            return json.dumps({'success':False, 'reason' : 'No sistema provided'}), 400, {'ContentType':'application/json'}
+        data = read_local_plain_text(SISTEMAS_FILE)
+        # parse the data, it's pipe separated, put it in a list, remove the sistema and write it back to the file
+        parsed_data = data.split("|");
+        if sistema in parsed_data:
+            parsed_data.remove(sistema)
+            # write the new data to the file, remove the pipes and write one element per line
+            data = "\n".join(parsed_data)
+            with open(SISTEMAS_FILE, "w") as file:
+                file.write(data)
+            return json.dumps({'success':True, 'reason' : 'Sistema removed'}), 200, {'ContentType':'application/json'}
+        else:
+            return json.dumps({'success':False, 'reason' : 'Sistema not found'}), 404, {'ContentType':'application/json'}
+
 @app.route("/upload",methods=["POST","GET"])
 def upload():
 
@@ -119,6 +161,29 @@ def upload():
            print('Solo archivos excel xlsx') 
         msg = 'Archivo recibido'    
     return jsonify(msg)
+
+# create 'api/createSistema' route that will receive a param called "sistema" and will write it to the file sistemasGestorContenido.txt
+@app.route('/api/createSistema', methods=["POST"])
+def api_create_sistema():
+    if request.method == "POST":
+        token = request.args.get('token')
+        if not token or token != app.secret_key:
+            return json.dumps({'success':False, 'reason' : 'Not authorized'}), 401, {'ContentType':'application/json'}
+        sistema = request.form.get('sistema')
+        if not sistema:
+            return json.dumps({'success':False, 'reason' : 'No sistema provided'}), 400, {'ContentType':'application/json'}
+        data = read_local_plain_text(SISTEMAS_FILE)
+        # parse the data, it's pipe separated, put it in a list, add the sistema and write it back to the file
+        parsed_data = data.split("|");
+        if sistema not in parsed_data:
+            parsed_data.append(sistema)
+            # write the new data to the file, remove the pipes and write one element per line
+            data = "\n".join(parsed_data)
+            with open(SISTEMAS_FILE, "w") as file:
+                file.write(data)
+            return json.dumps({'success':True, 'reason' : 'Sistema added'}), 200, {'ContentType':'application/json'}
+        else:
+            return json.dumps({'success':False, 'reason' : 'Sistema already exists'}), 400, {'ContentType':'application/json'}
 
 @app.route('/api/archivo')
 def api_archivo():

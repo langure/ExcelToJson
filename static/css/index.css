@@ -1,0 +1,46 @@
+.sistemas-container{
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  align-items: center;
+}
+.sistemas-container > *
+{
+  margin: 10px;
+  width: 100%;
+
+}
+
+
+.input-container {
+  display: flex;               /* Enable Flexbox for easy alignment */
+  align-items: center;         /* Vertically center items */
+  padding: 10px;               /* Add some padding around the container */
+  border: 1px solid #ccc;      /* Add a subtle border */
+  border-radius: 5px;          /* Rounded corners */
+  background-color: #f5f5f5;    /* Light background color */
+}
+
+/* Input Field Styles */
+.input-field {
+  flex-grow: 1;                /* Take up available space */
+  padding: 8px;
+  border: none;                 /* Remove default border */
+  outline: none;               /* Remove focus outline */
+}
+
+/* Button Styles */
+.add-button {
+  background-color: #007bff;    /* Blue button color */
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;            /* Add some space between button and input */
+}
+
+/* Optional: Hover Effect */
+.add-button:hover {
+  background-color: #0056b3;    /* Darker blue on hover */
+}
