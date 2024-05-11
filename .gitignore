@@ -5,6 +5,9 @@
 node_modules
 venv
 
+
+.idea
+
 # ignore inputs
 *.xlsx
 
@@ -14,3 +17,5 @@ venv
 metadatosGestorContenido.txt
 sistemasGestorContenido.txt
 1_catalogo_sistemas.txt
+
+triple-rookery-360218-1f50cc59d0e9.json
